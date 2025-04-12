@@ -78,7 +78,7 @@ export async function Login(payload) {
       return { error: " User y/o password" };
     }
   } catch (error) {
-    return { error: " User y/o password" };
+    return { error: " User y/o password" || error };
   }
 }
 
