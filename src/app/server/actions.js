@@ -168,13 +168,3 @@ export async function eraserButton(target) {
   revalidatePath("/hanyu");
   return { message: "Target Erased" };
 }
-
-export async function eraserProductButton(target) {
-  await prisma.product.delete({
-    where: {
-      id: `${target}`,
-    },
-  });
-  revalidatePath("/labs/prod-list");
-  return { message: "Target Erased" };
-}
