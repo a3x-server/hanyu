@@ -61,7 +61,7 @@ export async function addImage(payload: FormData) {
 }
 
 //! Hanyu
-export async function addHanyu(payload) {
+export async function addHanyu(payload: FormData) {
   const { hanzi, pinyin, tone, xinbanya, img, source } = payload;
   const id = uuid();
   try {
@@ -92,7 +92,7 @@ export async function getHanyu() {
   return HANYU;
 }
 
-export async function eraserButton(target) {
+export async function eraserButton(target: string) {
   await prisma.hanyu.delete({
     where: {
       id: `${target}`,
