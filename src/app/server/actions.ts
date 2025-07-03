@@ -8,28 +8,31 @@ import { cookies } from "next/headers";
 import { revalidatePath } from "next/cache";
 import path from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
-import { SubirFiles } from "@/services/firebase.config";
+import { upImages } from "@/services/firebase.config";
 
-//TODO: Seguridad en las Cookies
 
-//! Products
 export async function addImage(payload) {
-  const CATEGORY = payload.get("category") || "trifaxic-13";
-  const IMAGE = payload.get("img");
-  const { name } = IMAGE;
-  const NAME = name?.toLowerCase();
-  if (IMAGE === "undefined") {
+  const $CATEGORY = payload.get("category") || "server241";
+  const $IMAGE = payload.get("img");
+  if (typeof $IMAGE !== "string" && $IMAGE?.name) {
+    $NAME = $IMAGE.name.toLowerCase();
+  }
+  if ($IMAGE === "undefined") {
     return { message: "no image" };
   }
 
   //. Convertir FormData en Buffer: Archivo cargado en Memoria RAM
-  const bytes = await IMAGE.arrayBuffer();
-  const buffer = Buffer.from(bytes);
+  if (typeof $IMAGE !== "string" && $IMAGE?.arrayBuffer) {
+    const bytes = await $IMAGE.arrayBuffer();
+    buffer = Buffer.from(bytes);
+  } else {
+    return { message: "Invalid image format" };
+  }
 
   //. Guardar archivo en Carpeta Public
-  const newFolder = CATEGORY;
-  const imagePath = `${CATEGORY}-${new Date().getTime()}-tr1f4x1c-${NAME}`;
-  const newPath = path.join(process.cwd(), "public", "repo", newFolder);
+  const newFolder = typeof $CATEGORY === "string" ? $CATEGORY : "repoImg";
+  const imagePath = `${$CATEGORY}-${Date.now()}-formTask-${$NAME}`;
+  const newPath = path.join(process.cwd(), "public", "formTask", newFolder);
 
   //! save at local in DEV
   if (process.env.NODE_ENV === "development") {
@@ -37,24 +40,24 @@ export async function addImage(payload) {
       mkdirSync(newPath, { recursive: true });
     }
     const localFilePath = path.join(newPath, imagePath);
-    await writeFile(localFilePath, buffer);
+    if (buffer) {
+      await writeFile(localFilePath, buffer);
+    }
   }
 
-  //TODO: hacer function separada a firebase: 02-11-24
   try {
     //. Subir al Bucket Firebase
-    const imageURL = await SubirFiles(buffer, NAME);
-    console.log(imageURL);
-    if (!imageURL) {
-      return { message: filePath, localFilePath };
+    if (!buffer) {
+      return { message: "Buffer is undefined" };
     }
+    const imageURL = await upImages(buffer, imagePath);
+    console.log(imageURL);
     return { message: imageURL };
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return { message: "Error uploading image" };
   }
 }
-
-//! Auth - User
 
 export async function Login(payload) {
   const cookieStore = cookies();

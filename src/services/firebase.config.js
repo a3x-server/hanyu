@@ -13,7 +13,7 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
 
-export async function SubirFiles(bytes, name) {
+export async function upImages(bytes, name) {
 	const storageRef = ref(storage, `hanyu/${name}`)
 	// const folderRef = storageRef.child('')
 

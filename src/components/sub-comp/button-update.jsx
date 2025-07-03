@@ -3,16 +3,17 @@
 import { useRouter } from 'next/navigation'
 //[...]
 export default function ButtonUpdate({ target }) {
-    const { refresh, push } = useRouter()
+    const router= useRouter()
 
     const handleUpdate = async (target) => {
         // const isExists = await getOneProduct(target)
         // console.log({ isExists })
-        push(`/labs/update/${target}`)
+        router.push(`/labs/update/${target}`)
     }
 
     return (
         <button
+        type='button'
             onClick={() => handleUpdate(target)}
             className="text-2xl text-wrap text-center text-2-color tracking-wide bg-3-color border-3-color px-4 py-3 font-bold hover:bg-cyan-400 border-0"
         >

@@ -1,5 +1,5 @@
 "use client"
-import { eraserButton } from "@/app/server/actions.js"
+import { eraserButton } from "@/app/server/actions.ts"
 
 export default function ButtonEraser({ target, text }) {
   const handleEraser = async (target, text) => {

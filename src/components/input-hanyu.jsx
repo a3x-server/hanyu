@@ -1,10 +1,10 @@
 'use client'
 import { useForm } from 'react-hook-form'
-import { addImage, addHanyu } from '@/app/server/actions.js'
+import { addImage, addHanyu } from '@/app/server/actions.ts'
 import { useRouter } from 'next/navigation'
 
 export default function InputHanyu() {
-    const { refresh } = useRouter()
+    const router = useRouter()
     const { register, handleSubmit } = useForm({})
 
     const onSubmit = handleSubmit(async (data) => {
@@ -20,7 +20,7 @@ export default function InputHanyu() {
         try {
             data.img = image.message
             await addHanyu(data)
-            refresh()
+            router.refresh()
             return
         } catch (error) {
             console.error(error)

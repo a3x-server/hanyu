@@ -1,7 +1,7 @@
-import { getHanyu } from '@/app/server/actions.js'
+import { getHanyu } from '@/app/server/actions.ts'
 import ButtonEraser from '@/components/sub-comp/button-eraser.jsx'
 
-export default async function HanyuTable() {
+export default async function TableHanyu() {
 	const HANYU = await getHanyu()
 	return (
 		<section className="bg-1-bg text-1-hover/70 mt-12">
