@@ -59,7 +59,7 @@ export default function InputHanyu() {
                     </div>
                     {/* <Hanyutone /> */}
                     {/* <!-- 声调 shēngdiào --> */}
-                    <div className='flex items-center justify-between py-0 bg-1-hover'>
+                    <div >
                         <input type='text'
                             placeholder='声调'
                             maxLength={8}
@@ -68,7 +68,7 @@ export default function InputHanyu() {
                         />
                     </div>
                     {/* <!-- XIMBANYA --> */}
-                    <div className='w-full flex flex-col bg-1-hover' >
+                    <div>
                         <input type='text' placeholder='西班呀语' className='input_hanyu'
                             {...register('xinbanya')}
                         />
@@ -81,8 +81,8 @@ export default function InputHanyu() {
                         />
                     </div>
                     {/* button baochi:guardar */}
-                    <div className='w-full text-center'>
-                        <button type='button' className='input_hanyu hover:bg-1-link cursor-pointer'>
+                    <div>
+                        <button type='button' className='btn_main_hanyu'>
                             保持
                         </button>
                     </div>
