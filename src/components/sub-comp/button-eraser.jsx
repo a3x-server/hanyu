@@ -5,7 +5,7 @@ export default function ButtonEraser({ target, text }) {
   const handleEraser = async (target, text) => {
     if (text === "删除") {
       await eraserButton(target)
-      res.status(200).json({ message: "已删除" })
+      return { message: "已删除" }
     }
 
     await eraserProductButton(target)

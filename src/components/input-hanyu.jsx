@@ -82,7 +82,7 @@ export default function InputHanyu() {
                     </div>
                     {/* button baochi:guardar */}
                     <div>
-                        <button type='button' className='btn_main_hanyu'>
+                        <button type='submit' className='btn_main_hanyu'>
                             保持
                         </button>
                     </div>
