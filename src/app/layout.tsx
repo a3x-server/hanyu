@@ -13,9 +13,17 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Hanyu: h1",
-  description: "Base de Datos Mandarin + Japones",
-}
+  title: "汉语",
+  description: "汉语 / 日本語",
+  openGraph: {
+    title: "汉语",
+    description: "汉语 / 日本語",
+  },
+  twitter: {
+    title: "汉语",
+    description: "汉语 / 日本語",
+  },
+};
 
 export default function RootLayout({
   children,

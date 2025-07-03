@@ -4,20 +4,20 @@ import { eraserButton } from "@/app/server/actions.js"
 export default function ButtonEraser({ target, text }) {
   const handleEraser = async (target, text) => {
     if (text === "删除") {
-      const isErased = await eraserButton(target)
-      console.log(isErased.message)
-      return
+      await eraserButton(target)
+      res.status(200).json({ message: "已删除" })
     }
 
-    const isErased = await eraserProductButton(target)
-    console.log(isErased.message)
+    await eraserProductButton(target)
+    // console.log(isErased.message)
     return
   }
 
   return (
     <button
+      type="button"
       onClick={() => handleEraser(target, text)}
-      className="text-2xl text-wrap text-center text-2-color tracking-wide bg-3-color border-3-color px-4 py-3 font-bold hover:bg-cyan-400 border-0"
+      className="text-2xl text-wrap text-center text-1-bg tracking-wide bg-1-hover border-1-hover px-4 py-3 font-bold hover:bg-1-button-hover border-0"
     >
       {text}
     </button>

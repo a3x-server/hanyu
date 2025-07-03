@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { addImage, addHanyu } from '@/app/server/actions.js'
 import { useRouter } from 'next/navigation'
 
-export default function Hanyu() {
+export default function InputHanyu() {
     const { refresh } = useRouter()
     const { register, handleSubmit } = useForm({})
 
@@ -28,19 +28,18 @@ export default function Hanyu() {
     })
 
     return (
-        <section className='bg-x-color'>
+        <section className='bg-1-bg'>
             <article className='w-full flex flex-col justify-center items-center'>
                 <form
-                    className='min-w-sm max-w-md mt-10 bg-slate-700 rounded-md hover:shadow-lg hover:shadow-3-color p-2 flex flex-col gap-1'
+                    className='card min-w-sm max-w-md mt-10 bg-2-text/30 rounded-md py-4 px-2 flex flex-col gap-0.5'
                     onSubmit={onSubmit}
                 >
                     {/* <!-- hanzi --> */}
                     <div>
-                        <h1 className='w-full text-center text-3xl text-3-color uppercase pb-3'>汉语</h1>
                         <input type='text'
                             placeholder='汉字'
                             maxLength={4}
-                            className='w-full h-[160px] text-9xl placeholder:text-12xl bg-2-color text-3-color placeholder:text-3-color text-center rounded-md focus:outline-4 focus:outline-3-color'
+                            className='w-full h-64 text-9xl bg-1-hover text-dark-text placeholder:text-2-bg text-center rounded-md focus:bg-2-text/30 focus:text-1-accent focus:outline-2 focus:outline-3-color'
                             {...register('hanzi', {
                                 required: {
                                     value: true,
@@ -53,36 +52,37 @@ export default function Hanyu() {
                     <div>
                         <input type='text'
                             placeholder='拼音'
-                            maxLength={24}
-                            className='w-full h-16 text-3xl placeholder:text-12xl bg-2-color text-3-color placeholder:text-3-color italic text-center rounded-md'
+                            maxLength={16}
+                            className='input_hanyu'
                             {...register('pinyin')}
                         />
                     </div>
                     {/* <Hanyutone /> */}
                     {/* <!-- 声调 shēngdiào --> */}
-                    <div className='flex items-center justify-between py-0 bg-indigo-600'>
+                    <div className='flex items-center justify-between py-0 bg-1-hover'>
                         <input type='text'
                             placeholder='声调'
-                            maxLength={24}
-                            className='w-full h-16 text-3xl placeholder:text-12xl bg-2-color text-3-color placeholder:text-3-color italic text-center rounded-md'
+                            maxLength={8}
+                            className='input_hanyu'
                             {...register('tone')}
                         />
                     </div>
                     {/* <!-- XIMBANYA --> */}
-                    <div className='w-full flex flex-col bg-2-color' >
-                        <input type='text' placeholder='西班呀语' className='h-[50px] text-4xl text-center text-slate-50  placeholder:text-3-color rounded-md bg-2-color focus:ring-1 focus:ring-3-color '
+                    <div className='w-full flex flex-col bg-1-hover' >
+                        <input type='text' placeholder='西班呀语' className='input_hanyu'
                             {...register('xinbanya')}
                         />
                     </div>
-                    <div className='my-2'>
+                    <div className='h-12'>
                         <input type='file'
+                            accept='image/*'
+                            className='w-full h-16 text-md file:text-xs file:px-2 file:h-12 file:bg-1-hover'
                             {...register('img')}
                         />
                     </div>
                     {/* button baochi:guardar */}
                     <div className='w-full text-center'>
-                        <button className='w-2/3 py-2 text-2xl 
-							hover:bg-3-color bg-2-color  hover:text-2-color text-3-color'>
+                        <button type='button' className='input_hanyu hover:bg-1-link cursor-pointer'>
                             保持
                         </button>
                     </div>
