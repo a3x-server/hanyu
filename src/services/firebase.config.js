@@ -1,21 +1,20 @@
-import { initializeApp } from 'firebase/app'
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage'
+import { initializeApp } from 'firebase/app'
 
 const firebaseConfig = {
-	apiKey: 'AIzaSyDtY78MIsdIewzuJ6I6qOvmMYhcZTjNK90',
-	authDomain: 'serverbkd-trifaxic-ts.firebaseapp.com',
-	projectId: 'serverbkd-trifaxic-ts',
-	storageBucket: 'serverbkd-trifaxic-ts.appspot.com',
-	messagingSenderId: '838920304648',
-	appId: '1:838920304648:web:e28337b910c92ef893b9bd',
-	measurementId: 'G-8PLBF6XVT0',
+	apiKey: process.env.FIREBASE_API_KEY,
+	authDomain: process.env.FIREBASE_AUTH_DOMAIN,
+	projectId: process.env.FIREBASE_PROJECT_ID,
+	storageBucket: process.env.FIREBASE_STORAGE_BUCKET,
+	messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
+	appId: process.env.FIREBASE_APP_ID,
+	measurementId: 	process.env.FIREBASE_MEASUREMENT_ID,
 }
-
 const app = initializeApp(firebaseConfig)
 const storage = getStorage(app)
 
 export async function SubirFiles(bytes, name) {
-	const storageRef = ref(storage, `trifaxic/${name}`)
+	const storageRef = ref(storage, `hanyu/${name}`)
 	// const folderRef = storageRef.child('')
 
 	const resp = await uploadBytes(storageRef, bytes)
