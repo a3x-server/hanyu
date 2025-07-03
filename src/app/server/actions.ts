@@ -12,7 +12,7 @@ let $NAME = "server241"
 
 let buffer: Buffer | undefined;
 
-export async function addImage(payload) {
+export async function addImage(payload: FormData) {
   const $CATEGORY = payload.get("category") || "server241";
   const $IMAGE = payload.get("img");
   if (typeof $IMAGE !== "string" && $IMAGE?.name) {
