@@ -12,6 +12,15 @@ let $NAME = "server241"
 
 let buffer: Buffer | undefined;
 
+interface Data {
+  hanzi: string | null
+  pinyin: string | null
+  tone: string | null
+  xinbanya: string | null
+  img: string | URL | null
+  source: string | null
+}
+
 export async function addImage(payload: FormData) {
   const $CATEGORY = payload.get("category") || "server241";
   const $IMAGE = payload.get("img");
@@ -61,7 +70,7 @@ export async function addImage(payload: FormData) {
 }
 
 //! Hanyu
-export async function addHanyu(payload: FormData) {
+export async function addHanyu(payload: Data) {
   const { hanzi, pinyin, tone, xinbanya, img, source } = payload;
   const id = uuid();
   try {
