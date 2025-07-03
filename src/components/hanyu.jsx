@@ -69,7 +69,7 @@ export default function Hanyu() {
                         />
                     </div>
                     {/* <!-- XIMBANYA --> */}
-                    <div div className='w-full flex flex-col bg-2-color' >
+                    <div className='w-full flex flex-col bg-2-color' >
                         <input type='text' placeholder='西班呀语' className='h-[50px] text-4xl text-center text-slate-50  placeholder:text-3-color rounded-md bg-2-color focus:ring-1 focus:ring-3-color '
                             {...register('xinbanya')}
                         />
