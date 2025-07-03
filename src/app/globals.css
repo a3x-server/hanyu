@@ -28,6 +28,32 @@
   width: var(--card-width);
 }
 
+.input_main_hanyu {
+  /* w-full h-64 text-9xl bg-1-hover text-dark-text placeholder:text-2-bg text-center rounded-md focus:bg-2-text/30 focus:text-1-accent focus:outline-2 focus:outline-2-bg */
+
+  width: 100%;
+  height: 220px;
+  font-size: 10rem;
+  background-color: var(--color-1-hover);
+  color: var(--color-dark-text);
+  text-align: center;
+  border-radius: 0.375rem; /* rounded-md */
+  outline: 0;
+  transition: background-color 0.3s, color 0.3s, outline 0.3s;  
+
+  &::placeholder {
+    color: var(--color-dark-text)/70; /* bg-2-text */
+    }
+
+  &:focus {
+    background-color: var(--color-2-text)/30;
+    color: var(--color-1-accent);
+    outline: 2px solid var(--color-1-accent);
+    box-shadow: 0 2px 4px var(--color-1-shadow);
+  }
+}
+
+
 .input_hanyu{
   width: 100%;
   height: 64px;
@@ -38,4 +64,13 @@
   border-radius: 0.375rem; /* rounded-md */
   outline: 0;
   transition: background-color 0.3s, color 0.3s, outline 0.3s;
+
+  &::placeholder {
+    color: var(--color-dark-text)/70; /* bg-2-text */
+  }
+  &:focus {
+    background-color: var(--color-2-text)/30;
+    color: var(--color-1-bg);
+    outline: 2px solid var(--color-1-bg);
+  }
 }

@@ -4,11 +4,8 @@ import ButtonEraser from '@/components/sub-comp/button-eraser.jsx'
 export default async function HanyuTable() {
 	const HANYU = await getHanyu()
 	return (
-		<section className="bg-1-bg text-1-hover/70">
+		<section className="bg-1-bg text-1-hover/70 mt-12">
 			<article className="w-full px-1 py-2 mx-auto">
-				<div className="flex flex-col text-center w-full mb-1">
-					<h1 className="text-6xl italic font-bold py-6 px-1 text-1-hover">汉语</h1>
-				</div>
 				<div className="lg:w-1/2 w-full mx-auto overflow-hidden">
 					<table className="table-auto w-full text-center whitespace-wrap mx-auto">
 						<thead className="text-3xl px-auto">

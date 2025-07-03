@@ -31,7 +31,7 @@ export default function InputHanyu() {
         <section className='bg-1-bg'>
             <article className='w-full flex flex-col justify-center items-center'>
                 <form
-                    className='card min-w-sm max-w-md mt-10 bg-2-text/30 rounded-md py-4 px-2 flex flex-col gap-0.5'
+                    className='card min-w-sm max-w-md mt-2 bg-2-text/30 rounded-md py-4 px-2 flex flex-col gap-0.5'
                     onSubmit={onSubmit}
                 >
                     {/* <!-- hanzi --> */}
@@ -39,7 +39,7 @@ export default function InputHanyu() {
                         <input type='text'
                             placeholder='汉字'
                             maxLength={4}
-                            className='w-full h-64 text-9xl bg-1-hover text-dark-text placeholder:text-2-bg text-center rounded-md focus:bg-2-text/30 focus:text-1-accent focus:outline-2 focus:outline-3-color'
+                            className='input_main_hanyu'
                             {...register('hanzi', {
                                 required: {
                                     value: true,
