@@ -1,8 +1,26 @@
+'use client';
 import { getHanyu } from '@/app/server/actions.ts'
 import ButtonEraser from '@/components/sub-comp/button-eraser.jsx'
+import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation';
 
-export default async function TableHanyu() {
+export default function TableHanyu() {
+	const router = useRouter()
+	const [HANYU, setHANYU] = useState([])
+
+// 获取汉语表格数据
+	useEffect(() => {async function callHanyu() {
 	const HANYU = await getHanyu()
+	if (!HANYU) {
+		console.error('获取汉语数据失败')
+		return
+	}
+	console.log('获取汉语数据成功', HANYU)
+	setHANYU(HANYU)}
+	callHanyu()
+	router.refresh()
+}, [])
+
 	return (
 		<section className="bg-1-bg text-1-hover/70 mt-12">
 			<article className="w-full px-1 py-2 mx-auto">
