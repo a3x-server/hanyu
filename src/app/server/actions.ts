@@ -85,7 +85,7 @@ export async function addHanyu(payload: Data) {
         source,
       },
     });
-    revalidatePath("/hanyu");
+    revalidatePath("/");
     return HANYU;
   } catch (error) {
     console.error(error);

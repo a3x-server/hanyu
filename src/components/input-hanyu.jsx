@@ -5,90 +5,90 @@ import { useRouter } from 'next/navigation'
 
 export default function InputHanyu() {
     const router = useRouter()
-    const { register, handleSubmit } = useForm({})
+    const { register, handleSubmit } = useForm( {} )
 
-    const onSubmit = handleSubmit(async (data) => {
+    const onSubmit = handleSubmit( async ( data ) => {
         const img = data.img[ 0 ]
         const formDATA = new FormData()
-        formDATA.append('img', img)
-        formDATA.append('source', 'form-hanyu')
+        formDATA.append( 'img', img )
+        formDATA.append( 'source', 'form-hanyu' )
 
-        const image = await addImage(formDATA)
+        const image = await addImage( formDATA )
 
         //if (!image) return
 
         try {
             data.img = image.message
-            await addHanyu(data)
+            await addHanyu( data )
             router.refresh()
             return
-        } catch (error) {
-            console.error(error)
+        } catch ( error ) {
+            console.error( error )
         }
-    })
+    } )
 
     return (
-        <section className='bg-1-bg'>
-            <article className='w-full flex flex-col justify-center items-center'>
+        <section className='bg-dark-bg'>
+            <article className='input-box-container'>
                 <form
-                    className='card min-w-sm max-w-md mt-2 bg-2-text/30 rounded-md py-4 px-2 flex flex-col gap-0.5'
-                    onSubmit={onSubmit}
+                    className='input-form'
+                    onSubmit={ onSubmit }
                 >
-                    {/* <!-- hanzi --> */}
+                    {/* <!-- hanzi --> */ }
                     <div>
                         <input type='text'
                             placeholder='汉字'
-                            maxLength={4}
-                            className='input_main_hanyu'
-                            {...register('hanzi', {
+                            maxLength={ 4 }
+                            className='input-hanzi'
+                            { ...register( 'hanzi', {
                                 required: {
                                     value: true,
                                     message: '怎么样'
                                 }
-                            })}
+                            } ) }
                         />
                     </div>
-                    {/* <!-- pinyin --> */}
+                    {/* <!-- pinyin --> */ }
                     <div>
                         <input type='text'
                             placeholder='拼音'
-                            maxLength={16}
-                            className='input_hanyu'
-                            {...register('pinyin')}
+                            maxLength={ 16 }
+                            className='input-hanyu'
+                            { ...register( 'pinyin' ) }
                         />
                     </div>
-                    {/* <Hanyutone /> */}
-                    {/* <!-- 声调 shēngdiào --> */}
+                    {/* <Hanyutone /> */ }
+                    {/* <!-- 声调 shēngdiào --> */ }
                     <div >
                         <input type='text'
                             placeholder='声调'
-                            maxLength={8}
-                            className='input_hanyu'
-                            {...register('tone')}
+                            maxLength={ 8 }
+                            className='input-hanyu'
+                            { ...register( 'tone' ) }
                         />
                     </div>
-                    {/* <!-- XIMBANYA --> */}
+                    {/* <!-- XIMBANYA --> */ }
                     <div>
-                        <input type='text' placeholder='西班呀语' className='input_hanyu'
-                            {...register('xinbanya')}
+                        <input type='text' placeholder='西班呀语' className='input-hanyu'
+                            { ...register( 'xinbanya' ) }
                         />
                     </div>
                     <div className='h-12'>
                         <input type='file'
                             accept='image/*'
-                            className='w-full h-16 text-md file:text-xs file:px-2 file:h-12 file:bg-1-hover'
-                            {...register('img')}
+                            className='w-full h-16 text-md file:text-xs file:px-2 file:h-12 file:bg-x-hover'
+                            { ...register( 'img' ) }
                         />
                     </div>
-                    {/* button baochi:guardar */}
+                    {/* button baochi:guardar */ }
                     <div>
-                        <button type='submit' className='btn_main_hanyu'>
+                        <button type='submit' className='btn-main-hanyu'>
                             保持
                         </button>
                     </div>
                 </form>
             </article >
-            {/* {false && <HanyuTable />} */}
+            {/* {false && <HanyuTable />} */ }
         </section >
     )
 }
