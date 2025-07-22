@@ -135,29 +135,23 @@ input[type="file"]::file-selector-button {
   transition: background-color 0.3s, color 0.3s, box-shadow 0.3s;
 
   &:hover {
-    background-color: var(--color-x-accent);
+    background-color: var(--color-x-error);
     color: var(--color-dark-bg);
   }
 }
 
-.hanyu-table-container {
+/*! HANYU TABLE */
+
+.hanyu-table-section {
   background-color: var(--color-dark-bg);
   color: var(--color-x-bg);
-  /* bg-x-bg text-x-hover/70 mt-12 */
 }
 
 .hanyu-table-article {
   width: 100%;
   margin: 0 auto;
   padding: 2rem 1rem;
-}
-
-.hanyu-table-div {
-  width: 100%;
-  margin: 0 auto;
-  padding: 2rem 1rem;
   overflow: hidden;
-  /* lg: w-1/2 w-full mx-auto overflow-hidden */
 }
 
 .table {
@@ -186,7 +180,6 @@ input[type="file"]::file-selector-button {
 
 .first-col {
   border-top-left-radius: 8px;
-  /* border-bottom-left-radius: 8px; */
   color: var(--color-dark-text);
 }
 
@@ -199,6 +192,11 @@ input[type="file"]::file-selector-button {
   color: var(--color-x-hover);
 }
 
+.delete-col:hover {
+  color: var(--color-x-error);
+  cursor: pointer;
+}
+
 .tone-col {
   display: none;
 }
@@ -207,21 +205,33 @@ input[type="file"]::file-selector-button {
   font-size: 1.5rem;
 }
 
+/* TODO: Popup + Modal */
+
 .table-body tr:hover {
-  background-color: var(--color-x-link);
+  background-color: var(--color-x-accent);
+  color: var(--color-dark-text);
+  font-weight: 900;
   cursor: pointer;
+  scale: 1.05;
 }
 
 .table-footer {
-  background-color: #333;
-  color: #333;
+  background-color: var(--color-x-accent);
+  color: var(--color-x-accent);
   margin-top: 64px;
 }
 
 @media screen and (min-width: 768px) {
+  .table {
+    /* table-layout: fixed; */
+    width: 100%;
+    max-width: 960px;
+  }
+
 
   .tone-col,
   .delete-col {
+    /* display: none; */
     display: table-cell;
   }
 }
