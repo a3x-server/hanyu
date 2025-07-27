@@ -1,6 +1,6 @@
 'use client';
 import { getHanyu } from '@/app/server/actions.ts'
-import ButtonEraser from '@/components/sub-comp/button-eraser.jsx'
+import ButtonEraser from '@/components/sub-comp/button-eraser.tsx'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation';
 

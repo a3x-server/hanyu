@@ -6,9 +6,7 @@ export default function ButtonUpdate({ target }) {
     const router= useRouter()
 
     const handleUpdate = async (target) => {
-        // const isExists = await getOneProduct(target)
-        // console.log({ isExists })
-        router.push(`/labs/update/${target}`)
+        router.push(`/${target}`)
     }
 
     return (

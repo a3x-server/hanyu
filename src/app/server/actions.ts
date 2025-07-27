@@ -6,19 +6,19 @@ import { v4 as uuid } from "uuid";
 import { revalidatePath } from "next/cache";
 import path from "node:path";
 import { existsSync, mkdirSync } from "node:fs";
-import { upImages } from "@/services/firebase.config";
+import { upImages } from "@/services/firebase.config.ts";
 
-let $NAME = "server241"
+let $NAME = "server241";
 
 let buffer: Buffer | undefined;
 
 interface Data {
-  hanzi: string | null
-  pinyin: string | null
-  tone: string | null
-  xinbanya: string | null
-  img: string | URL | null
-  source: string | null
+  hanzi: string | null;
+  pinyin: string | null;
+  tone: string | null;
+  xinbanya: string | null;
+  img: string | URL | null;
+  source: string | null;
 }
 
 export async function addImage(payload: FormData) {

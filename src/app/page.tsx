@@ -1,5 +1,5 @@
-import InputHanyu from "@/components/input-hanyu.jsx";
-import TableHanyu from "@/components/table-hanyu.jsx";
+import InputHanyu from "@/components/input-hanyu.tsx";
+import TableHanyu from "@/components/table-hanyu.tsx";
 
 export default function page() {
 	return (
