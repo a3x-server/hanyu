@@ -47,7 +47,7 @@ export default function TableHanyu() {
 								{/* <td className="cell tone-col">{ elm.tone }</td> */ }
 								<td className="cell">{ elm.xinbanya }</td>
 								<td className="cell delete-col">
-									<ButtonEraser target={ elm.id } text="删除" />
+									<ButtonEraser target={ elm.id || '' } text="删除" />
 								</td>
 							</tr>
 						) ) }
