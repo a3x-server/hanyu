@@ -1,12 +1,15 @@
 'use client';
-import { getHanyu } from '@/app/server/actions.ts'
+
+import { useEffect, useState } from 'react'
+
 import ButtonEraser from '@/components/sub-comp/button-eraser.tsx'
-import { useState, useEffect } from 'react'
+import { HanyuItem } from '@/types/define.d'
+import { getHanyu } from '@/app/server/actions.ts'
 import { useRouter } from 'next/navigation';
 
 export default function TableHanyu() {
 	const router = useRouter()
-	const [ HANYU, setHANYU ] = useState( [] )
+	const [ HANYU, setHANYU ] = useState<HanyuItem[]>( [] )
 
 	// 获取汉语表格数据
 	useEffect( () => {
