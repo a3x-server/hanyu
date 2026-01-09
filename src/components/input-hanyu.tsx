@@ -4,57 +4,95 @@ import { addHanyu, addImage } from '@/app/server/actions.ts'
 
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
 
-// Define el esquema de validación con Zod
+// 📌 Esquema de validación con Zod
 const hanyuSchema = z.object( {
     hanzi: z.string().min( 1, 'El carácter chino es requerido' ).max( 4, 'Máximo 4 caracteres' ),
     pinyin: z.string().min( 1, 'El pinyin es requerido' ),
     tone: z.string().optional(),
     xinbanya: z.string().min( 1, 'La traducción es requerida' ),
-    img: z.any().optional() // Para el archivo de imagen
+    img: z
+        .any()
+        .refine(
+            ( files ) => !files || ( files.length > 0 && files[ 0 ].type.startsWith( 'image/' ) ),
+            'Debe ser una imagen válida'
+        )
+        .optional()
 } )
 
 type HanyuFormData = z.infer<typeof hanyuSchema>
 
 export default function InputHanyu() {
     const router = useRouter()
+    const [ preview, setPreview ] = useState<string | null>( null )
+
     const { register, handleSubmit, formState: { errors } } = useForm<HanyuFormData>( {
         resolver: zodResolver( hanyuSchema )
     } )
 
     const onSubmit = handleSubmit( async ( formData ) => {
-        const img = formData.img?.[ 0 ]
-        if ( !img ) {
-            console.error( 'No se proporcionó ninguna imagen' )
-            return
-        }
+        const imgFile = formData.img?.[ 0 ]
 
-        const formDATA = new FormData()
-        formDATA.append( 'img', img )
-        formDATA.append( 'source', 'form-hanyu' )
+        let imageUrl: string | null = null
 
-        try {
+        let formDATA = new FormData()
+        formDATA.append( "source", "form-hanyu" )
+
+        if ( imgFile ) {
+            formDATA.append( "img", imgFile )
             const image = await addImage( formDATA )
             if ( !image?.message ) {
-                throw new Error( 'Error al subir la imagen' )
+                throw new Error( "Error al subir la imagen" )
             }
-
-            await addHanyu( {
-                hanzi: formData.hanzi,
-                pinyin: formData.pinyin,
-                xinbanya: formData.xinbanya,
-                tone: formData.tone || null,
-                img: image.message,
-                source: 'form-hanyu'
-            } )
-
-            router.refresh()
-        } catch ( error ) {
-            console.error( 'Error al guardar:', error )
+            imageUrl = image.message
         }
+
+        await addHanyu( {
+            hanzi: formData.hanzi,
+            pinyin: formData.pinyin,
+            xinbanya: formData.xinbanya,
+            tone: formData.tone || null,
+            img: imageUrl, // puede ser null si no se subió nada
+            source: "form-hanyu"
+        } )
+
+        router.refresh()
     } )
+
+    // const onSubmit = handleSubmit( async ( formData ) => {
+    //     const imgFile = formData.img?.[ 0 ]
+    //     if ( !imgFile ) {
+    //         console.error( 'No se proporcionó ninguna imagen' )
+    //         return
+    //     }
+
+    //     const formDATA = new FormData()
+    //     formDATA.append( 'img', imgFile )
+    //     formDATA.append( 'source', 'form-hanyu' )
+
+    //     try {
+    //         const image = await addImage( formDATA )
+    //         if ( !image?.message ) {
+    //             throw new Error( 'Error al subir la imagen' )
+    //         }
+
+    //         await addHanyu( {
+    //             hanzi: formData.hanzi,
+    //             pinyin: formData.pinyin,
+    //             xinbanya: formData.xinbanya,
+    //             tone: formData.tone || null,
+    //             img: image.message,
+    //             source: 'form-hanyu'
+    //         } )
+
+    //         router.refresh()
+    //     } catch ( error ) {
+    //         console.error( 'Error al guardar:', error )
+    //     }
+    // } )
 
     return (
         <section className='bg-dark-bg'>
@@ -68,7 +106,7 @@ export default function InputHanyu() {
                             className='input-hanzi'
                             { ...register( 'hanzi' ) }
                         />
-                        { errors.hanzi && <p className="text-red-500 text-xs">{ errors.hanzi.message }</p> }
+                        { errors.hanzi && <p className="text-red-500 text-xs">{ String( errors.hanzi.message ) }</p> }
                     </div>
 
                     {/* Campo Pinyin */ }
@@ -79,7 +117,7 @@ export default function InputHanyu() {
                             className='input-hanyu'
                             { ...register( 'pinyin' ) }
                         />
-                        { errors.pinyin && <p className="text-red-500 text-xs">{ errors.pinyin.message }</p> }
+                        { errors.pinyin && <p className="text-red-500 text-xs">{ String( errors.pinyin.message ) }</p> }
                     </div>
 
                     {/* Campo Tono */ }
@@ -92,7 +130,7 @@ export default function InputHanyu() {
                         />
                     </div>
 
-                    {/* Campo XINBANYA */ }
+                    {/* Campo Xinbanya */ }
                     <div>
                         <input
                             type='text'
@@ -100,7 +138,7 @@ export default function InputHanyu() {
                             className='input-hanyu'
                             { ...register( 'xinbanya' ) }
                         />
-                        { errors.xinbanya && <p className="text-red-500 text-xs">{ errors.xinbanya.message }</p> }
+                        { errors.xinbanya && <p className="text-red-500 text-xs">{ String( errors.xinbanya.message ) }</p> }
                     </div>
 
                     {/* Campo de imagen */ }
@@ -110,8 +148,20 @@ export default function InputHanyu() {
                             accept='image/*'
                             className='w-full h-16 text-md file:text-xs file:px-2 file:h-12 file:bg-x-hover'
                             { ...register( 'img' ) }
+                            onChange={ ( e ) => {
+                                const file = e.target.files?.[ 0 ]
+                                if ( file ) setPreview( URL.createObjectURL( file ) )
+                            } }
                         />
+                        { errors.img && <p className="text-red-500 text-xs">{ String( errors.img.message ) }</p> }
                     </div>
+
+                    {/* Preview de la imagen */ }
+                    { preview && (
+                        <div className="mt-2">
+                            <img src={ preview } alt="preview" className="w-32 h-32 object-cover rounded-md" />
+                        </div>
+                    ) }
 
                     {/* Botón de envío */ }
                     <div>

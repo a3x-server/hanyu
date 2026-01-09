@@ -1,7 +1,7 @@
 {
   "name": "hanyu-h1",
-  "description": "Hanyu App: Chinesse + Japanese",
-  "version": "0.1.2",
+  "description": "Hanyu App: Chinesse",
+  "version": "0.4.5",
   "private": true,
   "scripts": {
     "dev": "next dev",
