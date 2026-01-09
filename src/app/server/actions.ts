@@ -1,28 +1,30 @@
 "use server";
-import prisma from "@/db/db.prisma.js";
-import { Buffer } from "node:buffer";
-import { writeFile } from "node:fs/promises";
-import { v4 as uuid } from "uuid";
-import { revalidatePath } from "next/cache";
-import path from "node:path";
-import { existsSync, mkdirSync } from "node:fs";
-import { upImages } from "@/services/firebase.config.ts";
 
-let $NAME = "server241";
+import { existsSync, mkdirSync } from "node:fs";
+
+import { Buffer } from "node:buffer";
+import path from "node:path";
+import prisma from "@/db/db.prisma.js";
+import { revalidatePath } from "next/cache";
+import { upImages } from "@/services/firebase.config.js";
+import { v4 as uuid } from "uuid";
+import { writeFile } from "node:fs/promises";
+
+let $NAME = "a3x";
 
 let buffer: Buffer | undefined;
 
 interface Data {
-  hanzi: string | null;
-  pinyin: string | null;
-  tone: string | null;
-  xinbanya: string | null;
-  img: string | URL | null;
+  hanzi: string ;
+  pinyin: string ;
+  tone?: string | null;
+  xinbanya: string ;
+  img?: string | URL | null;
   source: string | null;
 }
 
 export async function addImage(payload: FormData) {
-  const $CATEGORY = payload.get("category") || "server241";
+  const $CATEGORY = payload.get("category") || "a3x";
   const $IMAGE = payload.get("img");
   if (typeof $IMAGE !== "string" && $IMAGE?.name) {
     $NAME = $IMAGE.name.toLowerCase();
@@ -40,7 +42,7 @@ export async function addImage(payload: FormData) {
   }
 
   //. Guardar archivo en Carpeta Public
-  const newFolder = typeof $CATEGORY === "string" ? $CATEGORY : "server241";
+  const newFolder = typeof $CATEGORY === "string" ? $CATEGORY : "a3x";
   const imagePath = `${$CATEGORY}-${Date.now()}-formTask-${$NAME}`;
   const newPath = path.join(process.cwd(), "public", "formHanyu", newFolder);
 
@@ -81,10 +83,10 @@ export async function addHanyu(payload: Data) {
         pinyin,
         tone,
         xinbanya,
-        img,
+        img: img ? img.toString() : null,
         source,
       },
-    });
+    }) ;
     revalidatePath("/");
     return HANYU;
   } catch (error) {
@@ -93,7 +95,7 @@ export async function addHanyu(payload: Data) {
 }
 
 export async function getHanyu() {
-  const HANYU = await prisma.Hanyu.findMany({
+  const HANYU = await prisma.hanyu.findMany({
     orderBy: {
       createdAt: "desc",
     },

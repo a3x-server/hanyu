@@ -1,34 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "../generated/prisma"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
-}
-
-model Newsletters {
-  id        Int      @id @default(autoincrement())
-  fullname  String?
-  email     String?
-  tel       String?
-  message   String?
-  source    String?  @default("form-trifaxic")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Auth {
-  id        Int      @id @unique @default(autoincrement())
-  nickname  String?
-  email     String   @unique
-  hashPass  String
-  role      Boolean? @default(false)
-  img       String?
-  source    String?  @default("form-login-trifaxic")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  provider = "postgresql"
 }
 
 model Hanyu {
@@ -40,6 +16,7 @@ model Hanyu {
   img       String?
   source    String?  @default("form-hanyu")
   createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  updatedAt DateTime
 }
+
 
