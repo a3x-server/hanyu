@@ -1,11 +1,13 @@
 'use client'
 //! import { updateProduct, getOneProduct } from '@/app/server/actions.js'
+
 import { useRouter } from 'next/navigation'
+
 //[...]
-export default function ButtonUpdate({ target }) {
+export default function ButtonUpdate( { target }: { target: string } ) {
     const router= useRouter()
 
-    const handleUpdate = async (target) => {
+    const handleUpdate = async ( target: string ) => {
         router.push(`/${target}`)
     }
 
