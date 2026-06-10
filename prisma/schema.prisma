@@ -11,11 +11,12 @@ model Hanyu {
   hanzi     String
   pinyin    String
   xinbanya  String
+  riyu      String?
   tone      String?
   img       String?
   source    String?  @default("form-hanyu")
   createdAt DateTime @default(now())
-  updatedAt DateTime
+  updatedAt DateTime @updatedAt
 }
 
 
