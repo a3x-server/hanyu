@@ -66,6 +66,7 @@ export default function InputHanyu() {
             // 2. Control explícito de la respuesta exitosa
             if (result?.message) {
                 console.log("Éxito:", result.message);
+                alert(result.message);
                 // Aquí deberías limpiar el formulario o redirigir al usuario
             }
         } catch (error) {
@@ -78,47 +79,14 @@ export default function InputHanyu() {
             // Aquí deberías mostrar una alerta o notificación visual al usuario
         }
 
-
-
         router.refresh()
     })
-
-    // const onSubmit = handleSubmit( async ( formData ) => {
-    //     const imgFile = formData.img?.[ 0 ]
-    //     if ( !imgFile ) {
-    //         console.error( 'No se proporcionó ninguna imagen' )
-    //         return
-    //     }
-
-    //     const formDATA = new FormData()
-    //     formDATA.append( 'img', imgFile )
-    //     formDATA.append( 'source', 'form-hanyu' )
-
-    //     try {
-    //         const image = await addImage( formDATA )
-    //         if ( !image?.message ) {
-    //             throw new Error( 'Error al subir la imagen' )
-    //         }
-
-    //         await addHanyu( {
-    //             hanzi: formData.hanzi,
-    //             pinyin: formData.pinyin,
-    //             xinbanya: formData.xinbanya,
-    //             tone: formData.tone || null,
-    //             img: image.message,
-    //             source: 'form-hanyu'
-    //         } )
-
-    //         router.refresh()
-    //     } catch ( error ) {
-    //         console.error( 'Error al guardar:', error )
-    //     }
-    // } )
 
     return (
         <section className='bg-dark-bg'>
             <article className='input-box-container'>
                 <form className='input-form' onSubmit={onSubmit}>
+
                     {/* Campo Hanzi */}
                     <div>
                         <input
@@ -150,6 +118,7 @@ export default function InputHanyu() {
                             {...register('tone')}
                         />
                     </div>
+
                     { /* Campo Riyu */}
                     <div>
                         <input
@@ -160,6 +129,7 @@ export default function InputHanyu() {
                         />
                         {errors.riyu && <p className="text-red-500 text-xs">{String(errors.riyu.message)}</p>}
                     </div>
+
                     {/* Campo Xinbanya */}
                     <div>
                         <input
@@ -199,6 +169,7 @@ export default function InputHanyu() {
                             保持
                         </button>
                     </div>
+
                 </form>
             </article>
         </section>
