@@ -1,25 +1,33 @@
 'use client'
 
 import { addHanyu, addImage } from '@/app/server/actions.ts'
-
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import { HanyuItem } from '@/types/define'
 
-// 📌 Esquema de validación con Zod
+// Definimos los 5 tonos disponibles
+const CHINESE_TONES = [
+    { value: '1', label: '¯' },
+    { value: '2', label: '´' },
+    { value: '3', label: 'ˇ' },
+    { value: '4', label: '`' },
+    { value: '5', label: '·' }
+]
+
+// 📌 Esquema de validación actualizado con Zod
 const hanyuSchema = z.object({
     hanzi: z.string().min(1, 'El carácter chino es requerido').max(4, 'Máximo 4 caracteres'),
     pinyin: z.string().min(1, 'El pinyin es requerido'),
-    tone: z.string().optional(),
+    // Modificado: Ahora acepta un arreglo de strings mapeado desde los checkboxes
+    tone: z.array(z.string()).default([]).optional(),
     riyu: z.string().optional(),
     xinbanya: z.string().min(1, 'La traducción es requerida'),
     img: z
         .any()
         .refine(
-            (files) => !files || (files.length > 0 && files[0].type.startsWith('image/')),
+            (files) => !files || files.length === 0 || (files.length > 0 && files[0].type.startsWith('image/')),
             'Debe ser una imagen válida'
         )
         .optional()
@@ -31,20 +39,22 @@ export default function InputHanyu() {
     const router = useRouter()
     const [preview, setPreview] = useState<string | null>(null)
 
-    const { register, handleSubmit, formState: { errors } } = useForm<HanyuFormData>({
-        resolver: zodResolver(hanyuSchema)
+    const { register, handleSubmit, watch, formState: { errors }, reset } = useForm<HanyuFormData>({
+        resolver: zodResolver(hanyuSchema),
+        defaultValues: {
+            tone: [] // Inicializamos como arreglo vacío
+        }
     })
 
     const onSubmit = handleSubmit(async (formData) => {
-        const imgFile = formData.img?.[0]
-
+        const imgFile = formData.img && formData.img.length > 0 ? formData.img[0] : null
         let imageUrl: string | null = null
 
-        let formDATA = new FormData()
-        formDATA.append("source", "form-hanyu")
-
         if (imgFile) {
+            let formDATA = new FormData()
+            formDATA.append("source", "form-hanyu")
             formDATA.append("img", imgFile)
+
             const image = await addImage(formDATA)
             if (!image?.message) {
                 throw new Error("Error al subir la imagen")
@@ -52,35 +62,38 @@ export default function InputHanyu() {
             imageUrl = image.message
         }
 
+        // Convertimos el arreglo ['1', '3'] en un string ordenado "1, 3" para Prisma
+        const toneString = formData.tone && formData.tone.length > 0
+            ? formData.tone.sort().join(', ')
+            : null
+
         try {
-            // 1. Tipado seguro sin 'as' si las variables ya coinciden con la firma de la función
             const result = await addHanyu({
                 hanzi: formData.hanzi,
                 pinyin: formData.pinyin,
                 xinbanya: formData.xinbanya,
-                riyu: formData.riyu ?? null,
-                tone: formData.tone ?? null,
-                img: imageUrl ?? null,
+                riyu: formData.riyu || null,
+                tone: toneString, // Enviamos el string formateado
+                img: imageUrl,
             });
 
-            // 2. Control explícito de la respuesta exitosa
             if (result?.message) {
-                console.log("Éxito:", result.message);
                 alert(result.message);
-                // Aquí deberías limpiar el formulario o redirigir al usuario
+                reset();
+                setPreview(null);
             }
         } catch (error) {
-            // 3. Manejo robusto de errores de red o del backend
             if (error instanceof Error) {
                 console.error("Error en la solicitud:", error.message);
             } else {
                 console.error("Error inesperado:", error);
             }
-            // Aquí deberías mostrar una alerta o notificación visual al usuario
         }
 
         router.refresh()
     })
+
+    const { onChange, ...imgRegister } = register('img')
 
     return (
         <section className='bg-dark-bg'>
@@ -109,15 +122,41 @@ export default function InputHanyu() {
                         {errors.pinyin && <p className="text-red-500 text-xs">{String(errors.pinyin.message)}</p>}
                     </div>
 
-                    {/* Campo Tono */}
-                    <div>
-                        <input
-                            type='text'
-                            placeholder='声调'
-                            className='input-hanyu'
-                            {...register('tone')}
-                        />
+                    {/* Campo Tonos (Selección Múltiple mediante Checkboxes) */}
+                    {/* Campo Tonos (Botones de Selección Múltiple) */}
+                    <div className='w-full mx-auto text-center flex flex-col items-center gap-2 p-3 bg-x-hover'>
+                        <span className='input-hanyu'>
+                            音调
+                        </span>
+                        <div className='flex flex-wrap gap-2'>
+                            {CHINESE_TONES.map((tone) => {
+                                const isSelected = watch('tone')?.includes(tone.value);
+
+                                return (
+                                    <label
+                                        key={tone.value}
+                                        className={`w-8 h-8 
+                        px-3 py-1 rounded-full text-xl text-center font-semibold cursor-pointer 
+                        transition-all duration-200 select-none 
+                        ${isSelected
+                                                ? 'bg-cyan-500 text-white shadow-md shadow-cyan-900/20'
+                                                : 'bg-dark-bg text-gray-300 hover:bg-gray-800 hover:text-white'
+                                            }
+                    `}
+                                    >
+                                        <input
+                                            type='checkbox'
+                                            value={tone.value}
+                                            className='hidden' // Ocultamos el checkbox cuadrado nativo
+                                            {...register('tone')}
+                                        />
+                                        {tone.label}
+                                    </label>
+                                );
+                            })}
+                        </div>
                     </div>
+
 
                     { /* Campo Riyu */}
                     <div>
@@ -147,8 +186,9 @@ export default function InputHanyu() {
                             type='file'
                             accept='image/*'
                             className='w-full h-16 text-md file:text-xs file:px-2 file:h-12 file:bg-x-hover'
-                            {...register('img')}
+                            {...imgRegister}
                             onChange={(e) => {
+                                onChange(e);
                                 const file = e.target.files?.[0]
                                 if (file) setPreview(URL.createObjectURL(file))
                             }}
